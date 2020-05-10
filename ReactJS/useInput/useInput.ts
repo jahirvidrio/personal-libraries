@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 interface UseInputProps {
@@ -31,46 +31,47 @@ export default function useInputValue({
   const [ error, setError ] = useState<String | null>(null);
 
 
-  function validate(value: string) {
-    if (required && (value.length === 0)) {
-      return errorMessages.required || 'This value must be provide';
+  function validate() {
+    if (required && value.length === 0) {
+      return setError(errorMessages.required || 'This value must be provide');
     }
 
     if (minLength && value.length < minLength) {
-      return errorMessages.minLength || `This value must have a minimum length of ${minLength}`;
+      return setError(errorMessages.minLength || `This value must have a minimum length of ${minLength}`);
     }
 
     if (maxLength && value.length > maxLength) {
-      return errorMessages.maxLength || `This value must have a maximum length of ${maxLength}`;
+      return setError(errorMessages.maxLength || `This value must have a maximum length of ${maxLength}`);
     }
 
     if (!regExp.test(value)) {
-      return errorMessages.regExp || 'This value doesn\'t match the requested format.';
+      return setError(errorMessages.regExp || 'This value doesn\'t match the requested format.');
     }
 
     if (!customValidation(value)) {
-      return errorMessages.customValidation || 'This value doesn\'t match the requested format.';
+      return setError(errorMessages.customValidation || 'This value doesn\'t match the requested format.');
     }
-    
-    return null;
+
+    return setError(null);
   }
 
   function onChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const value = e.target.value;
-    const error = validate(value);
-
-    setValue(value);
-    setError(error);
+    setValue(e.target.value);
   }
 
-  function onBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    onChange(e);
+  function onBlur() {
     setWasActivated(true);
   }
+
+  useEffect(() => {
+    validate();
+  }, [ value, wasActivated ]);
+
 
   return {
     onChange,
     onBlur,
+    validate,
     value,
     error,
     wasActivated,
