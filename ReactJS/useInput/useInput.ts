@@ -11,6 +11,7 @@ interface UseInputProps {
     required?: string;
     regExp?: string;
     minLength?: string;
+    maxLength?: number;
     customValidation?: string;
   };
   customValidation?: (value: string) => boolean;
@@ -40,7 +41,7 @@ export default function useInputValue({
     }
 
     if (maxLength && value.length > maxLength) {
-      return errorMessages.minLength || `This value must have a maximum length of ${maxLength}`;
+      return errorMessages.maxLength || `This value must have a maximum length of ${maxLength}`;
     }
 
     if (!regExp.test(value)) {
