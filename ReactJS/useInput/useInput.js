@@ -5,6 +5,8 @@ export default function useInputValue({
   initialValue,
   required = false,
   regExp = /.*/,
+  minLength,
+  maxLength,
   errorMessages = {},
   customValidation = () => true,
 }) {
@@ -16,6 +18,14 @@ export default function useInputValue({
   function validate(value) {
     if (required && (value.length === 0)) {
       return errorMessages.required || 'This value must be provide';
+    }
+
+    if (minLength && value.length < minLength) {
+      return errorMessages.minLength || `This value must have a minimum length of ${minLength}`;
+    }
+
+    if (maxLength && value.length > maxLength) {
+      return errorMessages.minLength || `This value must have a maximum length of ${maxLength}`;
     }
 
     if (!regExp.test(value)) {

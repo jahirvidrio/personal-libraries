@@ -5,9 +5,12 @@ interface UseInputProps {
   initialValue: string;
   required?: boolean;
   regExp?: RegExp;
+  minLength?: number;
+  maxLength?: number;
   errorMessages?: {
     required?: string;
     regExp?: string;
+    minLength?: string;
     customValidation?: string;
   };
   customValidation?: (value: string) => boolean;
@@ -17,6 +20,8 @@ export default function useInputValue({
   initialValue,
   required = false,
   regExp = /.*/,
+  minLength,
+  maxLength,
   errorMessages = {},
   customValidation = () => true,
 }: UseInputProps) {
@@ -28,6 +33,14 @@ export default function useInputValue({
   function validate(value: string) {
     if (required && (value.length === 0)) {
       return errorMessages.required || 'This value must be provide';
+    }
+
+    if (minLength && value.length < minLength) {
+      return errorMessages.minLength || `This value must have a minimum length of ${minLength}`;
+    }
+
+    if (maxLength && value.length > maxLength) {
+      return errorMessages.minLength || `This value must have a maximum length of ${maxLength}`;
     }
 
     if (!regExp.test(value)) {
