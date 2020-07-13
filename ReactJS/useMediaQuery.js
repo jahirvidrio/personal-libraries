@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 /**
  *
  * @param {string} expresion min-width | max-width | min-height | max-height
- * @param {number} size >= 0
+ * @param {number} size must be a positive integer
  * @param {string} [unit = px] px | em | rem
  *
  */
