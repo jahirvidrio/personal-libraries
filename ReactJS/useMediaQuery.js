@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 
 /**
@@ -13,16 +13,23 @@ import { useState, useEffect } from 'react';
 function useMediaQuery(expresion, size, unit = 'px') {
   const [match, setMatch] = useState(false);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(`(${expresion}: ${size}${unit})`);
-    const mediaQueryListener = () => setMatch(mediaQuery.matches);
+  const mediaQuery = useMemo(() => (
+    window.matchMedia(`(${expresion}: ${size}${unit})`)
+  ), [expresion, size, unit]);
 
+  const mediaQueryListener = useCallback(() => (
+    setMatch(mediaQuery.matches)
+  ), [mediaQuery]);
+
+
+  useEffect(() => {
     mediaQuery.addListener(mediaQueryListener);
     mediaQueryListener();
 
     return () => mediaQuery.removeListener(mediaQueryListener);
-  }, []);
+  }, [mediaQueryListener, mediaQuery]);
 
+  
   return match;
 }
 
