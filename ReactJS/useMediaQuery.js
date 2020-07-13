@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 
 /**
  *
- * @param {string} expresion : min-width | max-width | min-height | max-height
- * @param {number} size : >= 0
- * @param {string} [unit = px] : px | em | rem
+ * @param {string} expresion min-width | max-width | min-height | max-height
+ * @param {number} size >= 0
+ * @param {string} [unit = px] px | em | rem
  *
  */
 
