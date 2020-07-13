@@ -3,9 +3,9 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 
 /**
  *
- * @param {string} expression min-width | max-width | min-height | max-height
- * @param {number} size must be a positive integer
- * @param {string} [unitType = px] px | em | rem
+ * @param {( 'min-width' | 'max-width' | 'min-height' | 'max-height' )} expression Must be a "Media query" expression
+ * @param {number} size Must be a positive integer
+ * @param {( 'px' | 'em' | 'rem' )} [unitType=px] Must be an unit type of css media queries
  *
  */
 
@@ -13,7 +13,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 function useMediaQuery(expression, size, unitType = 'px') {
   const [match, setMatch] = useState(false);
 
-  
+
   useEffect(() => {
     const mediaQuery = window.matchMedia(`(${expression}: ${size}${unitType})`);
     const mediaQueryListener = () => setMatch(mediaQuery.matches);
