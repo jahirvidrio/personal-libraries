@@ -1,15 +1,22 @@
 import { useState, useEffect } from 'react';
 
 
-function useMediaQuery(mediaQueryString) {
+/**
+ * 
+ * @param {string} expresion : min-width | max-width | min-height | max-height 
+ * @param {number} size : >= 0
+ * @param {string} [unit = px] : px | em | rem
+ * 
+ */
+
+
+
+function useMediaQuery(expresion, size, unit = 'px') {
   const [match, setMatch] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(mediaQueryString);
-
-    function mediaQueryListener() {
-      setMatch(mediaQuery.matches);
-    }
+    const mediaQuery = window.matchMedia(`(${expresion}: ${size}${unit})`);
+    const mediaQueryListener = () => setMatch(mediaQuery.matches);
 
     mediaQuery.addListener(mediaQueryListener);
     mediaQueryListener();
